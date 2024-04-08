@@ -90,7 +90,6 @@ internal class Program
                 WriteColor("(Q) Back to Main Menu", "g");
 
                 Console.WriteLine("");
-                Console.Write("");
 
                 input = CheckStr("Choose an Option: ", input);
 
@@ -131,29 +130,31 @@ internal class Program
         {
             bool exit = false;
             string input = "";
+            Product prod = new Product();
 
             while (!exit)
             {
                 WriteColor("Products Menu", "y");
                 WriteColor("-----------------------------------------------", "y");
                 WriteColor("(1) Show Products", "g");
+                /*
                 WriteColor("(2) Add", "g");
                 WriteColor("(3) Edit", "g");
-                WriteColor("(4) Remove", "g");
+                WriteColor("(4) Remove", "g"); 
+                */
                 WriteColor("(Q) Back to Main Menu", "g");
 
                 Console.WriteLine("");
-                Console.Write("");
 
                 input = CheckStr("Choose an Option: ", input);
 
                 switch (input)
                 {
                     case "1":
-                        //prod.Show(context);
+                        prod.Show(context);
                         exit = false;
                         break;
-                    case "2":
+                  /*  case "2":
                         //prod.Show(context);
                         exit = false;
                         break;
@@ -172,6 +173,7 @@ internal class Program
                         //DeleteProd(context);
                         exit = false;
                         break;
+                  */
                     case "Q":
                         exit = true;
                         break;
@@ -184,15 +186,18 @@ internal class Program
         {
             bool exit = false;
             string input = "";
+            Country country = new Country();
 
             while (!exit)
             {
                 WriteColor("Countries Main Menu", "y");
                 WriteColor("-----------------------------------------------", "y");
                 WriteColor("(1) Show countries", "g");
+                /*
                 WriteColor("(2) Add", "g");
                 WriteColor("(3) Edit", "g");
                 WriteColor("(4) Remove", "g");
+                */
                 WriteColor("(Q) Back to Main Menu", "g");
 
                 Console.WriteLine("");
@@ -203,28 +208,26 @@ internal class Program
                 switch (input)
                 {
                     case "1":
-                        //country.Show(context);
+                        country.Show(context);
                         exit = false;
                         break;
+                    /*
                     case "2":
-                        //country.Show(context);
-                        exit = false;
-                        break;
-                    case "3":
                         // Add New Asset
                         //InputCountry(false, context);
                         exit = false;
                         break;
-                    case "4":
+                    case "3":
                         // Edit
                         //InputCountry(true, context);
                         exit = false;
                         break;
-                    case "5":
+                    case "4":
                         //  Delete
                         //DeleteCountry(context);
                         exit = false;
                         break;
+                    */
                     case "Q":
                         exit = true;
                         break;
