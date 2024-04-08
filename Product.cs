@@ -39,9 +39,9 @@ namespace Asset
                     "Price".PadRight(10) +
                     "Type";
 
-            MsgColor("Products :", "y");
-            MsgColor("-----------------------------------------------", "y");
-            MsgColor(title, "g");
+            WriteColor("Products :", "y");
+            DrawLine(title);
+            WriteColor(title, "g");
 
             foreach (Product p in Result)
             {
@@ -51,11 +51,7 @@ namespace Asset
                                   p.Model.PadRight(20) +
                                   p.Price.ToString().PadRight(10), "w");
             }
-            for (int i= 0; i<= title.Length; i++)
-            {
-                line += "-"; 
-            }
-            MsgColor(line, "y");
+            DrawLine(title);
         }
 
         public void Add(string type, string brand, string model, double price, DBCAsset context)
@@ -67,7 +63,7 @@ namespace Asset
 
             context.Products.Add(this);
             context.SaveChanges(); // this saves to the DB.
-            MsgColor("Product has been Saved", "y");
+            MsgColor("Product has been Saved");
         }
 
         public void Update(int id, string type, string brand, string model, double price, DBCAsset context)
@@ -81,7 +77,7 @@ namespace Asset
 
             context.Update(p);
             context.SaveChanges();
-            MsgColor("Product has been Updated", "y");
+            MsgColor("Product has been Updated");
         }
 
         public void Delete(int id, DBCAsset context)
@@ -89,7 +85,7 @@ namespace Asset
             Product p = context.Products.FirstOrDefault(x => x.Id == id);
             context.Remove(p);
             context.SaveChanges();
-            MsgColor("Product has been Deleted", "y");
+            MsgColor("Product has been Deleted");
         }
     }
 }

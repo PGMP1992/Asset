@@ -18,21 +18,24 @@ namespace Asset
 
         // CRUD Methods
 
+        public bool CheckId(int id, DBCAsset context)
+        {
+            return (Select(id, context) != null);
+        }
+
         // Select a record
         public MyAsset Select(int id, DBCAsset context)
         {
-            MyAsset asset1 = new MyAsset();
-            asset1 = context.Assets.FirstOrDefault(x => x.Id == id);
-            if (asset1 == null)
+            MyAsset a = new MyAsset();
+            a = context.Assets.FirstOrDefault(x => x.Id == id);
+            if (a == null)
             {
-                MsgColor("Record not Found!", "r");
-
+                ErrorMsg("Record not Found!");
             }
-            return asset1;
+            return a;
         }
 
         // Show records in Table
-
         public void Show(bool byCountry, DBCAsset context)
         {
             string title = "";
@@ -43,29 +46,29 @@ namespace Asset
             // select * from Assets
             //List<MyAsset> result = context.Assets.ToList();
 
-            //Select all from Assets +Product + Countries -----------------------------------------
+            //Select all from Assets + Product + Countries -----------------------------------------
             if (byCountry) // Order By Country and Date
             {
                 result = context.Assets.
                                     Include(x => x.Product).
                                     Include(x => x.Country).
-                                    OrderBy(p => p.CountryId).
-                                    OrderBy(p => p.PurchaseDate).
+                                    OrderBy(x => x.CountryId).
+                                    OrderBy(x => x.PurchaseDate).
                                     ToList();
             } else // order ByDate
             {
                 result = context.Assets.
                                     Include(x => x.Product).
                                     Include(x => x.Country).
-                                    OrderBy(p => p.PurchaseDate).
+                                    OrderBy(x => x.PurchaseDate).
                                     ToList();
             }
             
             if (result.Count == 0) {
-                MsgColor("There are no Assets in the Database", "r");
+                ErrorMsg("There are no Assets in the Database");
             
             } else {
-                title = "Id".PadRight(5) + 
+                title = "Id".PadRight(8) + 
                         "Type".PadRight(15) +
                         "Brand".PadRight(15) +
                         "Model".PadRight(15) +
@@ -74,17 +77,19 @@ namespace Asset
                         "Currency".PadRight(10) +
                         "Local Price".PadRight(10);
 
-                MsgColor("Assets :", "y");
+                WriteColor("Assets :", "y");
                 DrawLine(title);
-                MsgColor(title, "y");
+                WriteColor(title, "g");
                 
                 foreach (MyAsset p in result) {
+                    // calculate local price
                     lPrice = p.Product.Price * p.Country.DollarRate;
-                    if (DateTime.Now <= PurchaseDate.AddDays((365 * 3) - 180)) { color = "y"; } // 6 months
-                    else if (DateTime.Now <= PurchaseDate.AddDays(365 * 3 - 90)) { color = "r"; } // 3 months 
+                    
+                    if (DateTime.Now >= p.PurchaseDate.AddDays((365 * 3) - 180)) { color = "y"; } // 6 months
+                    else if (DateTime.Now >= p.PurchaseDate.AddDays(365 * 3 - 90)) { color = "r"; } // 3 months 
                     else { color = "w"; }
 
-                    Console.WriteLine(p.Id.ToString().PadRight(5) +
+                    WriteColor(p.Id.ToString().PadRight(8) +
                                           p.Product.Type.PadRight(15) +
                                           p.Product.Brand.PadRight(15) +
                                           p.Product.Model.PadRight(15) +
@@ -100,16 +105,18 @@ namespace Asset
         // Add Record 
         public void Add(DateTime dt, int prodId, int countryId, DBCAsset context)
         {
+            //MyAsset a = new MyAsset();
             try {
                 PurchaseDate = dt;
                 ProductId = prodId;
                 CountryId = countryId;
 
-                context.Assets.Add(this);
-                context.SaveChanges(); // this saves to the DB.
-                MsgColor("Asset has been Saved", "y");
+                context.Assets.Add(this); // ????????
+                context.SaveChanges(); 
+                MsgColor("Asset has been Saved");
+            
             } catch (Exception e) {
-                MsgColor(e.Message, "r");
+                ErrorMsg(e.Message);
             }
         }
 
@@ -125,15 +132,14 @@ namespace Asset
 
                     context.Assets.Update(a);
                     context.SaveChanges();
-                    MsgColor("Asset has been Updated", "y");
-                    Console.WriteLine("");
+                    MsgColor("Asset has been Updated");
+            
                 } catch ( Exception e ) {
-                    MsgColor(e.Message, "r");
+                    ErrorMsg(e.Message);
                 }
             }
             else { 
-                MsgColor("Record not found!", "r");
-                Console.WriteLine("");
+                ErrorMsg("Record not found!");
             }
         }
 
@@ -145,20 +151,16 @@ namespace Asset
                 try {
                     context.Assets.Remove(a);
                     context.SaveChanges();
-                    MsgColor("Asset has been Deleted", "y");
-                    Console.WriteLine("");
+                    MsgColor("Asset has been Deleted");
                 } 
                 catch ( Exception e) {
-                    MsgColor(e.Message, "r");
-                    Console.WriteLine("");
+                    ErrorMsg(e.Message);
                 }
             }
             else {
-                MsgColor("Record not found!", "r");
-                Console.WriteLine("");
+                ErrorMsg("Record not found!");
             }
         }
-
     }
 }
 

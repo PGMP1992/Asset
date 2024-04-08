@@ -24,7 +24,7 @@ internal class Program
         while (!exit)
         {
             Console.WriteLine();
-            MsgColor("Track Asset App ", "y");
+            WriteColor("Track Asset App ", "y");
 
             exit = MainMenu(context);
         }
@@ -36,12 +36,12 @@ internal class Program
 
             while (!exit)
             {
-                MsgColor("Main Menu", "y");
-                MsgColor("-----------------------------------------------", "y");
-                MsgColor("(1) Assets", "g");
-                MsgColor("(2) Products", "g");
-                MsgColor("(3) Countries", "g");
-                MsgColor("(Q) Quit", "g");
+                WriteColor("Main Menu", "y");
+                WriteColor("-----------------------------------------------", "y");
+                WriteColor("(1) Assets", "g");
+                WriteColor("(2) Products", "g");
+                WriteColor("(3) Countries", "g");
+                WriteColor("(Q) Quit", "g");
 
                 Console.WriteLine("");
                 Console.Write("");
@@ -80,14 +80,14 @@ internal class Program
 
             while (!exit)
             {
-                MsgColor("Assets Menu", "y");
-                MsgColor("-----------------------------------------------", "y");
-                MsgColor("(1) Show Assets ( sort by Office and Date)", "g");
-                MsgColor("(2) Show Assets ( sort by Date)", "g");
-                MsgColor("(3) Add", "g");
-                MsgColor("(4) Edit", "g");
-                MsgColor("(5) Remove", "g");
-                MsgColor("(Q) Back to Main Menu", "g");
+                WriteColor("Assets Menu", "y");
+                WriteColor("-----------------------------------------------", "y" );
+                WriteColor("(1) Show Assets ( sort by Office and Date)", "g");
+                WriteColor("(2) Show Assets ( sort by Date)", "g");
+                WriteColor("(3) Add", "g");  
+                WriteColor("(4) Edit", "g");
+                WriteColor("(5) Remove", "g");
+                WriteColor("(Q) Back to Main Menu", "g");
 
                 Console.WriteLine("");
                 Console.Write("");
@@ -134,13 +134,13 @@ internal class Program
 
             while (!exit)
             {
-                MsgColor("Products Menu", "y");
-                MsgColor("-----------------------------------------------", "y");
-                MsgColor("(1) Show Products ", "g");
-                MsgColor("(2) Add", "g");
-                MsgColor("(3) Edit", "g");
-                MsgColor("(4) Remove", "g");
-                MsgColor("(Q) Back to Main Menu", "g");
+                WriteColor("Products Menu", "y");
+                WriteColor("-----------------------------------------------", "y");
+                WriteColor("(1) Show Products", "g");
+                WriteColor("(2) Add", "g");
+                WriteColor("(3) Edit", "g");
+                WriteColor("(4) Remove", "g");
+                WriteColor("(Q) Back to Main Menu", "g");
 
                 Console.WriteLine("");
                 Console.Write("");
@@ -187,13 +187,13 @@ internal class Program
 
             while (!exit)
             {
-                MsgColor("Countries Main Menu", "y");
-                MsgColor("-----------------------------------------------", "y");
-                MsgColor("(1) Show countries", "g");
-                MsgColor("(2) Add", "g");
-                MsgColor("(3) Edit", "g");
-                MsgColor("(4) Remove", "g");
-                MsgColor("(Q) Back to Main Menu", "g");
+                WriteColor("Countries Main Menu", "y");
+                WriteColor("-----------------------------------------------", "y");
+                WriteColor("(1) Show countries", "g");
+                WriteColor("(2) Add", "g");
+                WriteColor("(3) Edit", "g");
+                WriteColor("(4) Remove", "g");
+                WriteColor("(Q) Back to Main Menu", "g");
 
                 Console.WriteLine("");
                 Console.Write("");

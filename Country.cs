@@ -39,9 +39,9 @@ namespace Asset
                     "Currency".PadRight(15) +
                     "Dollar Rate";
 
-            MsgColor("Countries :", "y");
-            MsgColor("-----------------------------------------------", "y");
-            MsgColor(title, "y");
+            WriteColor("Countries :", "y");
+            DrawLine(title);
+            WriteColor(title, "y");
             
             foreach (Country p in Result)
             {
@@ -50,11 +50,7 @@ namespace Asset
                                   p.ShortName.PadRight(15) +
                                   p.DollarRate.ToString(), "w");
             }
-            for (int i = 0; i <= title.Length; i++ )
-            {
-                line += "-";
-            }
-            MsgColor(line, "y");
+            DrawLine(title);
         }
 
         // Add New Record
@@ -66,7 +62,7 @@ namespace Asset
 
             context.Countries.Add(this);
             context.SaveChanges(); // this saves to the DB.
-            MsgColor("Country has been Saved", "y" );
+            MsgColor("Country has been Saved");
         }
         
         // Update Record
@@ -80,7 +76,7 @@ namespace Asset
             
             context.Update(c);
             context.SaveChanges();
-            MsgColor("Country has been Updated", "y");
+            MsgColor("Country has been Updated");
             
         }
 
@@ -90,7 +86,7 @@ namespace Asset
             Country c = context.Countries.FirstOrDefault(x => x.Id == id);
             context.Remove (c);
             context.SaveChanges();
-            MsgColor("Country has been Deleted", "y");
+            MsgColor("Country has been Deleted");
         }
     }
 }

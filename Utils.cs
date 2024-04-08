@@ -1,6 +1,4 @@
-﻿using Microsoft.Identity.Client;
-
-namespace Asset
+﻿namespace Asset
 {
     internal class Utils
     {
@@ -12,7 +10,7 @@ namespace Asset
             {
                 line += "-";
             }
-            MsgColor(line, "y");
+            WriteColor(line, "y");
         }
 
         // Check if Empty String 
@@ -48,7 +46,7 @@ namespace Asset
         {
             if (s == "Q")
             {
-                MsgColor("Exiting Program. Thank you!", "y");
+                MsgColor("Exiting Program. Thank you!");
                 return true;
             }
             else
@@ -57,7 +55,58 @@ namespace Asset
             }
         }
 
-        
+        //  Default error message 
+        public static void MsgInvalidEntry()
+        {
+            MsgColor("Invalid Entry! Please try again: ");
+        }
+
+        //  Default error message 
+        public static void MsgColor(string s)
+        {
+            WriteColor(s , "y");
+            Console.WriteLine("");
+        }
+
+        public static void ErrorMsg(string s)
+        {
+            WriteColor(s, "r");
+            Console.WriteLine("");
+        }
+
+        public static void Top(string prompt)
+        {
+            WriteColor(prompt, "y");
+            WriteColor("----------------------------------------", "b");
+            WriteColor("Enter \"Q\" " + "anytime to exit.", "b");
+            WriteColor("----------------------------------------", "b");
+        }
+
+        // Color text in Msg 
+        public static void WriteColor(string s, string color)
+        {
+            switch (color)
+            {
+                case "y":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case "r":
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case "g":
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case "b":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case "w":
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+            }
+            Console.WriteLine(s);
+            Console.ResetColor();
+        }
+
         /*
         public static int CheckData(int i)
         {
@@ -90,46 +139,6 @@ namespace Asset
             return result;
         }
         */
-
-        //  Default error message 
-        public static void MsgInvalidEntry()
-        {
-            Console.Beep();
-            MsgColor("Invalid Entry! Please try again: ", "r");
-        }
-
-        public static void Top(string prompt)
-        {
-            MsgColor(prompt, "y");
-            MsgColor("----------------------------------------", "b");
-            MsgColor("Enter \"Q\" " + "anytime to exit.", "b");
-            MsgColor("----------------------------------------", "b");
-        }
-
-        // Color text in Prompt 
-        public static void MsgColor(string msg, string color)
-        {
-            switch (color)
-            {
-                case "y":
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    break;
-                case "r":
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    break;
-                case "g":
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-                case "b":
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    break;
-                case "w":
-                    Console.ForegroundColor = ConsoleColor.White;
-                    break;
-            }
-            Console.WriteLine(msg);
-            Console.ResetColor();
-        }
 
     } //class 
 

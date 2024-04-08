@@ -8,21 +8,19 @@ namespace Asset
         public static void InputAsset(bool update, DBCAsset context)
         {
             bool exit = false,
-            validData = true;
+                 validData = true;
             string sInput = "";
-            
-            // Asset Vars
             int id = 0;
-            DateTime dt = Convert.ToDateTime("01-01-2021");
             int iProd = 0;
             int iCountry = 0;
-
+            DateTime dt = Convert.ToDateTime("01-01-2021");
+            
             MyAsset asset = new MyAsset();
             MyAsset newAsset = new MyAsset();
             Product prod = new Product();
             Country country = new Country();
 
-            if (update) 
+            if (update)   
             {
                 while (!exit)
                 {
@@ -40,14 +38,23 @@ namespace Asset
                         try
                         {
                             id = Convert.ToInt32(sInput);
-                            newAsset = asset.Select(id, context);
-                            break;
+                            // Check Id exists 
+                            if (asset.CheckId(id, context) == false)
+                            {
+                                MsgColor("Asset Id does not exist!");
+                                validData = false;
+                                exit = false;
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
                             validData = false;
                             exit = false;
-                            MsgInvalidEntry();
+                            MsgColor(e.Message);
                         }
                         break;
                     }
@@ -63,8 +70,9 @@ namespace Asset
                 
                 if (update) //Show Product
                 {
-                    sInput = newAsset.ProductId.ToString();
-                    MsgColor("Product Id: " + sInput, "y");
+                    //sInput = newAsset.ProductId.ToString();
+                    sInput = asset.ProductId.ToString();
+                    WriteColor("Product Id: " + sInput, "y");
                 }
 
                 sInput = CheckStr("Product Id: ", sInput);
@@ -79,13 +87,14 @@ namespace Asset
                     try
                     {
                         iProd = Convert.ToInt32(sInput);
+                        // Check ProdId exists  
                         break;
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                         validData = false;
                         exit = false;
-                        MsgInvalidEntry();
+                        MsgColor(e.Message);
                     }
                     break;
                 }
@@ -97,8 +106,9 @@ namespace Asset
 
                 if (update)
                 {
-                    sInput = newAsset.CountryId.ToString();
-                    MsgColor("Country Id: " + sInput, "y");
+                    //sInput = newAsset.CountryId.ToString();
+                    sInput = asset.CountryId.ToString();
+                    WriteColor("Country Id: " + sInput, "y");
                 }
 
                 Top("Please enter a Country Id from the list:");
@@ -114,13 +124,14 @@ namespace Asset
                     try
                     {
                         iCountry = Convert.ToInt32(sInput);
+                        // Check countryId 
                         break;
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                         validData = false;
                         exit = false;
-                        MsgInvalidEntry();
+                        MsgColor(e.Message);
                     }
                     break;
                 }
@@ -130,9 +141,10 @@ namespace Asset
             {
                 if (update)
                 {
-                    sInput = newAsset.PurchaseDate.ToString();
-                    MsgColor("Purchase Date: " + sInput, "y");
+                    sInput = asset.PurchaseDate.ToString();
+                    WriteColor("Purchase Date: " + sInput, "y");
                 }
+
                 sInput = CheckStr("Purchase Date (DD/MM/YYYY): ", sInput);
                 if (!Empty(sInput))
                 {
@@ -146,26 +158,25 @@ namespace Asset
                         dt = Convert.ToDateTime(sInput);
                         break;
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                         validData = false;
                         exit = false;
-                        MsgInvalidEntry();
+                        MsgColor(e.Message);
                     }
                 }
             }
 
-            // Show Imput
-            //Console.Write(dt.ToString() + " " + iProd.ToString() + " " + iCountry.ToString());
             if (validData)
             {
                 if (!update)
                 {
-                    asset.Add(dt, iProd, iCountry, context); //Ok
+                    // Add new record 
+                    newAsset.Add(dt, iProd, iCountry, context);
                 }
                 else
                 {
-                    asset.Update(id, dt, iProd, iCountry, context);
+                    newAsset.Update(id, dt, iProd, iCountry, context); // Works
                 }
             }
         } // InputAsset
@@ -177,7 +188,7 @@ namespace Asset
             string input = "";
             int id = 0;
             MyAsset asset = new MyAsset();
-            MyAsset newAsset = new MyAsset();
+            //MyAsset newAsset = new MyAsset();
 
             while (!exit)
             {
@@ -193,13 +204,21 @@ namespace Asset
                     try
                     {
                         id = Convert.ToInt32(input);
-                        asset.Delete(id, context);
-                        break;
+                        if (asset.CheckId(id, context) == null)
+                        {
+                            MsgColor(" Id does not exist!");
+                            exit = false;
+                        }
+                        else
+                        {
+                            asset.Delete(id, context); //Works 
+                            break;
+                        }
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                         exit = false;
-                        MsgInvalidEntry();
+                        MsgColor(e.Message);
                     }
                     break;
                 }
