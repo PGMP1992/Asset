@@ -77,7 +77,6 @@ namespace Asset
             context.Update(c);
             context.SaveChanges();
             MsgColor("Country has been Updated");
-            
         }
 
         // Delete Record 

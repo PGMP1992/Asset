@@ -44,15 +44,7 @@
         // Check String returns Q to exit program 
         public static bool Exit(string s)
         {
-            if (s == "Q")
-            {
-                MsgColor("Exiting Program. Thank you!");
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return s == "Q";
         }
 
         //  Default error message 
@@ -77,9 +69,6 @@
         public static void Top(string prompt)
         {
             WriteColor(prompt, "y");
-            WriteColor("----------------------------------------", "b");
-            WriteColor("Enter \"Q\" " + "anytime to exit.", "b");
-            WriteColor("----------------------------------------", "b");
         }
 
         // Color text in Msg 

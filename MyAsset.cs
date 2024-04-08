@@ -2,6 +2,7 @@
 using Azure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using System.ComponentModel.Design;
 using static Asset.Utils;
 
 namespace Asset
@@ -30,7 +31,7 @@ namespace Asset
             a = context.Assets.FirstOrDefault(x => x.Id == id);
             if (a == null)
             {
-                ErrorMsg("Record not Found!");
+                ErrorMsg("Asset Id does not exist!");
             }
             return a;
         }
@@ -84,9 +85,10 @@ namespace Asset
                 foreach (MyAsset p in result) {
                     // calculate local price
                     lPrice = p.Product.Price * p.Country.DollarRate;
-                    
-                    if (DateTime.Now >= p.PurchaseDate.AddDays((365 * 3) - 180)) { color = "y"; } // 6 months
-                    else if (DateTime.Now >= p.PurchaseDate.AddDays(365 * 3 - 90)) { color = "r"; } // 3 months 
+                    if (DateTime.Now >= p.PurchaseDate.AddDays(365 * 3 - 90))
+                        { color = "r"; } // 3 months
+                    else if (DateTime.Now >= p.PurchaseDate.AddDays((365 * 3) - 180)) 
+                        { color = "y"; } // 6 months
                     else { color = "w"; }
 
                     WriteColor(p.Id.ToString().PadRight(8) +
@@ -123,32 +125,27 @@ namespace Asset
         // Update Record
         public void Update(int id, DateTime dt, int prodId, int countryId, DBCAsset context)
         {
-            MyAsset a = Select(id, context);
-            if (a != null) {
-                try {
-                    a.PurchaseDate = dt;
-                    a.ProductId = prodId;
-                    a.CountryId = countryId;
+            MyAsset a = new MyAsset();
+            try 
+            {
+                a.PurchaseDate = dt;
+                a.ProductId = prodId;
+                a.CountryId = countryId;
 
-                    context.Assets.Update(a);
-                    context.SaveChanges();
-                    MsgColor("Asset has been Updated");
+                context.Assets.Update(a);
+                context.SaveChanges();
+                MsgColor("Asset has been Updated");
             
-                } catch ( Exception e ) {
+            } catch ( Exception e ) {
                     ErrorMsg(e.Message);
-                }
-            }
-            else { 
-                ErrorMsg("Record not found!");
             }
         }
 
         // Delete record
         public void Delete(int id, DBCAsset context)
         {
-            MyAsset a = Select(id, context);
-            if (a != null) { 
-                try {
+            MyAsset a = new MyAsset();
+            try {
                     context.Assets.Remove(a);
                     context.SaveChanges();
                     MsgColor("Asset has been Deleted");
@@ -157,11 +154,7 @@ namespace Asset
                     ErrorMsg(e.Message);
                 }
             }
-            else {
-                ErrorMsg("Record not found!");
-            }
         }
     }
-}
 
 

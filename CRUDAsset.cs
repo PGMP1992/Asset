@@ -28,35 +28,31 @@ namespace Asset
                     Top("Please enter an Asset Id from the list:");
                     sInput = CheckStr("Asset Id: ", sInput);
                     
-                    if (!Empty(sInput))
+                    if (!Empty(sInput) && Exit(sInput))
                     {
-                        if (Exit(sInput))
-                        {
-                            exit = true;
-                            validData = false;
-                        }
-                        try
-                        {
-                            id = Convert.ToInt32(sInput);
-                            // Check Id exists 
-                            if (asset.CheckId(id, context) == false)
-                            {
-                                MsgColor("Asset Id does not exist!");
-                                validData = false;
-                                exit = false;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            validData = false;
-                            exit = false;
-                            MsgColor(e.Message);
-                        }
+                        exit = true;
+                        validData = false;
                         break;
+                    }
+
+                    try
+                    {
+                        id = Convert.ToInt32(sInput);
+                        // Check Id exists 
+                        if (asset.CheckId(id, context))
+                        {
+                            validData = true;
+                            break;
+                        }
+                        else
+                        {
+                            validData = false;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        validData = false;
+                        MsgColor(e.Message);
                     }
                 }
             }
@@ -71,32 +67,30 @@ namespace Asset
                 if (update) //Show Product
                 {
                     //sInput = newAsset.ProductId.ToString();
-                    sInput = asset.ProductId.ToString();
-                    WriteColor("Product Id: " + sInput, "y");
+                    //sInput = asset.ProductId.ToString();
+                    //WriteColor("Product Id: " + sInput, "y");
                 }
 
                 sInput = CheckStr("Product Id: ", sInput);
 
-                if (!Empty(sInput))
+                if (!Empty(sInput) && Exit(sInput) )
                 {
-                    if (Exit(sInput))
-                    {
-                        exit = true;
-                        validData = false;
-                    }
-                    try
-                    {
-                        iProd = Convert.ToInt32(sInput);
-                        // Check ProdId exists  
-                        break;
-                    }
-                    catch (Exception e)
-                    {
-                        validData = false;
-                        exit = false;
-                        MsgColor(e.Message);
-                    }
+                    exit = true;
+                    validData = false;
                     break;
+                }
+                
+                try
+                {
+                    iProd = Convert.ToInt32(sInput);
+                    validData = true;
+                    // Check ProdId exists  
+                    break;
+                }
+                catch (Exception e)
+                {
+                    validData = false;
+                    MsgColor(e.Message);
                 }
             }
 
@@ -107,33 +101,30 @@ namespace Asset
                 if (update)
                 {
                     //sInput = newAsset.CountryId.ToString();
-                    sInput = asset.CountryId.ToString();
-                    WriteColor("Country Id: " + sInput, "y");
+                    //sInput = asset.CountryId.ToString();
+                    //WriteColor("Country Id: " + sInput, "y");
                 }
 
                 Top("Please enter a Country Id from the list:");
                 sInput = CheckStr("Country Id: ", sInput);
 
-                if (!Empty(sInput))
+                if (!Empty(sInput) && Exit(sInput))
                 {
-                    if (Exit(sInput))
-                    {
-                        exit = true;
-                        validData = false;
-                    }
-                    try
-                    {
-                        iCountry = Convert.ToInt32(sInput);
-                        // Check countryId 
-                        break;
-                    }
-                    catch (Exception e)
-                    {
-                        validData = false;
-                        exit = false;
-                        MsgColor(e.Message);
-                    }
+                    exit = true;
+                    validData = false;
                     break;
+                }
+                try
+                {
+                    iCountry = Convert.ToInt32(sInput);
+                    validData = true;
+                    // Check countryId 
+                    break;
+                }
+                catch (Exception e)
+                {
+                    validData = false;
+                    MsgColor(e.Message);
                 }
             }
 
@@ -141,29 +132,28 @@ namespace Asset
             {
                 if (update)
                 {
-                    sInput = asset.PurchaseDate.ToString();
-                    WriteColor("Purchase Date: " + sInput, "y");
+                    //sInput = asset.PurchaseDate.ToString();
+                    //WriteColor("Purchase Date: " + sInput, "y");
                 }
 
                 sInput = CheckStr("Purchase Date (DD/MM/YYYY): ", sInput);
-                if (!Empty(sInput))
+                if (!Empty(sInput) && Exit(sInput))
                 {
-                    if (Exit(sInput))
-                    {
-                        exit = true;
-                        validData = false;
-                    }
-                    try
-                    {
-                        dt = Convert.ToDateTime(sInput);
-                        break;
-                    }
-                    catch (Exception e)
-                    {
-                        validData = false;
-                        exit = false;
-                        MsgColor(e.Message);
-                    }
+                    exit = true;
+                    validData = false;
+                    break;
+                }
+                
+                try
+                {
+                    dt = Convert.ToDateTime(sInput);
+                    validData = true;
+                    break;
+                }
+                catch (Exception e)
+                {
+                    validData = false;
+                    MsgColor(e.Message);
                 }
             }
 
@@ -176,6 +166,7 @@ namespace Asset
                 }
                 else
                 {
+                    // Update
                     newAsset.Update(id, dt, iProd, iCountry, context); // Works
                 }
             }
@@ -188,39 +179,31 @@ namespace Asset
             string input = "";
             int id = 0;
             MyAsset asset = new MyAsset();
-            //MyAsset newAsset = new MyAsset();
 
             while (!exit)
             {
                 asset.Show(true, context);
                 Top("Please enter an Asset Id from the list:");
                 input = CheckStr("Asset Id: ", input);
-                if (!Empty(input))
+                if (!Empty(input) && Exit(input))
                 {
-                    if (Exit(input))
-                    {
-                        exit = true;
-                    }
-                    try
-                    {
-                        id = Convert.ToInt32(input);
-                        if (asset.CheckId(id, context) == null)
-                        {
-                            MsgColor(" Id does not exist!");
-                            exit = false;
-                        }
-                        else
-                        {
-                            asset.Delete(id, context); //Works 
-                            break;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        exit = false;
-                        MsgColor(e.Message);
-                    }
+                    exit = true;
                     break;
+                }
+
+                try
+                {
+                    id = Convert.ToInt32(input);
+                    if (asset.CheckId(id, context))
+                    {
+                        asset.Delete(id, context); //Works 
+                        break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    exit = false;
+                    MsgColor(e.Message);
                 }
             }
         } // Delete 
