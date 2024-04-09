@@ -6,12 +6,9 @@
  */
 
 using Asset;
-
+using static Asset.CRUDAsset;
 // Added 
 using static Asset.Utils;
-using static Asset.CRUDAsset;
-using System.Linq;
-using System.ComponentModel.Design; // Asset Methods
 
 // Vars
 bool exit = false;
@@ -33,7 +30,7 @@ static bool MainMenu(DBCAsset context)
     string input = "";
     Product product = new Product();
     Country country = new Country();
-    string[] entry = { "1", "2", "3", "C", "Q"};
+    string[] entry = { "1", "2", "3", "C", "Q" };
 
     while (!exit)
     {
@@ -85,7 +82,7 @@ static bool MenuAssets(DBCAsset context)
     bool exit = false;
     string input = "";
     MyAsset asset = new MyAsset();
-    string[] entry = { "1", "2", "3", "4", "5", "C", "Q"};
+    string[] entry = { "1", "2", "3", "4", "5", "C", "Q" };
 
     while (!exit)
     {
