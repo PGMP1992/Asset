@@ -135,6 +135,7 @@ namespace Asset
             MyAsset a = new MyAsset();
             try 
             {
+                a = Select(id, context);
                 a.PurchaseDate = dt;
                 a.ProductId = prodId;
                 a.CountryId = countryId;
@@ -152,13 +153,15 @@ namespace Asset
         public void Delete(int id, DBCAsset context)
         {
             MyAsset a = new MyAsset();
-            try {
-                    context.Assets.Remove(a);
-                    context.SaveChanges();
+            try 
+            {
+                a = Select(id, context);
+                context.Assets.Remove(a);
+                context.SaveChanges();
                     MsgColor("Asset has been Deleted");
-                } 
+            } 
                 catch ( Exception e) {
-                    ErrorMsg(e.Message);
+                ErrorMsg(e.Message);
                 }
             }
         }
