@@ -56,7 +56,7 @@
         //  Default error message 
         public static void MsgColor(string s)
         {
-            WriteColor(s , "y");
+            WriteColor(s, "y");
             Console.WriteLine("");
         }
 

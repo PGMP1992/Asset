@@ -10,7 +10,7 @@ namespace Asset
         public DbSet<Country> Countries { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<MyAsset> Assets { get; set; }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // We tell the app to use the connectionstring.
@@ -26,8 +26,8 @@ namespace Asset
             ModelBuilder.Entity<Country>().HasData(new Country { Id = 2, Name = "Spain", ShortName = "EUR", DollarRate = 1.10 });
             ModelBuilder.Entity<Country>().HasData(new Country { Id = 3, Name = "USA", ShortName = "USD", DollarRate = 1.00 });
             ModelBuilder.Entity<Country>().HasData(new Country { Id = 4, Name = "Denmark", ShortName = "DKK", DollarRate = 0.14 });
-            ModelBuilder.Entity<Country>().HasData(new Country { Id = 5, Name = "Great Britain", ShortName = "GBP" , DollarRate = 1.2});
-            
+            ModelBuilder.Entity<Country>().HasData(new Country { Id = 5, Name = "Great Britain", ShortName = "GBP", DollarRate = 1.2 });
+
             // Products Table 
             ModelBuilder.Entity<Product>().HasData(new Product { Id = 1, Brand = "Apple", Model = "iBook 1.0", Price = 1500.00, Type = "Laptop" });
             ModelBuilder.Entity<Product>().HasData(new Product { Id = 2, Brand = "Apple", Model = "iPhone 8.0", Price = 1000.00, Type = "Phone" });

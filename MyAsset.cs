@@ -1,8 +1,6 @@
 ﻿// Added 
-using Azure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using System.ComponentModel.Design;
 using static Asset.Utils;
 
 namespace Asset
@@ -51,12 +49,13 @@ namespace Asset
             if (byCountry) // Order By Country and Date
             {
                 result = context.Assets.
-                                    Include( x => x.Product).
-                                    Include( x => x.Country).
-                                    OrderBy( x => x.CountryId).
-                                    ThenBy(  x => x.PurchaseDate).
+                                    Include(x => x.Product).
+                                    Include(x => x.Country).
+                                    OrderBy(x => x.CountryId).
+                                    ThenBy(x => x.PurchaseDate).
                                     ToList();
-            } else // order ByDate
+            }
+            else // order ByDate
             {
                 result = context.Assets.
                                     Include(x => x.Product).
@@ -64,12 +63,15 @@ namespace Asset
                                     OrderBy(x => x.PurchaseDate).
                                     ToList();
             }
-            
-            if (result.Count == 0) {
+
+            if (result.Count == 0)
+            {
                 ErrorMsg("There are no Assets in the Database");
-            
-            } else {
-                title = "Id".PadRight(8) + 
+
+            }
+            else
+            {
+                title = "Id".PadRight(8) +
                         "Type".PadRight(15) +
                         "Brand".PadRight(15) +
                         "Model".PadRight(15) +
@@ -79,21 +81,22 @@ namespace Asset
                         "Local Price".PadRight(10);
 
                 if (byCountry) { WriteColor("Assets Sorted by Country and Date:", "y"); }
-                else { WriteColor("Assets Sorted by Date:", "y"); }    
-                
+                else { WriteColor("Assets Sorted by Date:", "y"); }
+
                 DrawLine(title);
                 WriteColor(title, "g");
-                
-                foreach (MyAsset p in result) {
+
+                foreach (MyAsset p in result)
+                {
                     // calculate local price
                     lPrice = p.Product.Price * p.Country.DollarRate;
-                    
+
                     if (DateTime.Now >= p.PurchaseDate.AddDays(365 * 3 - 90)) // 3 months
-                        { color = "r"; }
-                    else if ( DateTime.Now >= p.PurchaseDate.AddDays((365 * 3) - 180) && 
-                             !(DateTime.Now >= p.PurchaseDate.AddDays(365 * 3 - 90) ) )  // 6 months
-                    { color = "y"; } 
-                    
+                    { color = "r"; }
+                    else if (DateTime.Now >= p.PurchaseDate.AddDays((365 * 3) - 180) &&
+                             !(DateTime.Now >= p.PurchaseDate.AddDays(365 * 3 - 90)))  // 6 months
+                    { color = "y"; }
+
                     else { color = "w"; }
 
                     WriteColor(p.Id.ToString().PadRight(8) +
@@ -103,28 +106,31 @@ namespace Asset
                                           p.Product.Price.ToString().PadRight(10) +
                                           p.PurchaseDate.ToString().PadRight(22) +
                                           p.Country.ShortName.PadRight(10) +
-                                          String.Format("{0:###,###}", lPrice) , color);
+                                          String.Format("{0:###,###}", lPrice), color);
                 }
 
                 DrawLine(title);
                 WriteColor("   Red => 3 months life left |   Yellow => 6 months life left", "y");
-            } 
+            }
         }
 
         // Add Record 
         public void Add(DateTime dt, int prodId, int countryId, DBCAsset context)
         {
             MyAsset a = new MyAsset();
-            try {
+            try
+            {
                 a.PurchaseDate = dt;
                 a.ProductId = prodId;
                 a.CountryId = countryId;
 
                 context.Assets.Add(a); // ????????
-                context.SaveChanges(); 
+                context.SaveChanges();
                 MsgColor("Asset has been Saved");
-            
-            } catch (Exception e) {
+
+            }
+            catch (Exception e)
+            {
                 ErrorMsg(e.Message);
             }
         }
@@ -133,7 +139,7 @@ namespace Asset
         public void Update(int id, DateTime dt, int prodId, int countryId, DBCAsset context)
         {
             MyAsset a = new MyAsset();
-            try 
+            try
             {
                 a = Select(id, context);
                 a.PurchaseDate = dt;
@@ -143,9 +149,11 @@ namespace Asset
                 context.Assets.Update(a);
                 context.SaveChanges();
                 MsgColor("Asset has been Updated");
-            
-            } catch ( Exception e ) {
-                    ErrorMsg(e.Message);
+
+            }
+            catch (Exception e)
+            {
+                ErrorMsg(e.Message);
             }
         }
 
@@ -153,18 +161,19 @@ namespace Asset
         public void Delete(int id, DBCAsset context)
         {
             MyAsset a = new MyAsset();
-            try 
+            try
             {
                 a = Select(id, context);
                 context.Assets.Remove(a);
                 context.SaveChanges();
-                    MsgColor("Asset has been Deleted");
-            } 
-                catch ( Exception e) {
+                MsgColor("Asset has been Deleted");
+            }
+            catch (Exception e)
+            {
                 ErrorMsg(e.Message);
-                }
             }
         }
     }
+}
 
 

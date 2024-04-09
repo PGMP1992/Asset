@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Drawing;
 
 
 
@@ -21,7 +19,7 @@ namespace Asset
         [MaxLength(100)]
         public string Type { get; set; }
         //public MyAsset MyAsset { get; set; }
-        
+
         // Methods
 
         // Select a record
@@ -52,7 +50,7 @@ namespace Asset
                     "Type".PadRight(10) +
                     "Brand".PadRight(10) +
                     "Model".PadRight(20) +
-                    "Price".PadRight(10) ;
+                    "Price".PadRight(10);
 
             WriteColor("Products :", "y");
             DrawLine(title);
@@ -65,7 +63,7 @@ namespace Asset
                                   p.Brand.PadRight(10) +
                                   p.Model.PadRight(20) +
                                   //p.Price.ToString().PadRight(10), "w");
-                                  String.Format("{0:###,###}", p.Price) ,"w");
+                                  String.Format("{0:###,###}", p.Price), "w");
             }
             DrawLine(title);
         }

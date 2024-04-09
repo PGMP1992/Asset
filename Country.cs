@@ -17,7 +17,7 @@ namespace Asset
         public string ShortName { get; set; } // Ex. SEK, USD
         public double DollarRate { get; set; } = 0.00;
         //public MyAsset MyAsset { get; set; }
-       
+
         // Methods -------------------------------------------------------
 
         // Select a record
@@ -53,10 +53,10 @@ namespace Asset
             WriteColor("Countries :", "y");
             DrawLine(title);
             WriteColor(title, "y");
-            
+
             foreach (Country p in Result)
             {
-                Console.WriteLine(p.Id.ToString().PadRight(5) + 
+                Console.WriteLine(p.Id.ToString().PadRight(5) +
                                   p.Name.PadRight(20) +
                                   p.ShortName.PadRight(15) +
                                   p.DollarRate.ToString(), "w");
@@ -75,16 +75,16 @@ namespace Asset
             context.SaveChanges(); // this saves to the DB.
             MsgColor("Country has been Saved");
         }
-        
+
         // Update Record
-        public void Update (int id, string Name, string ShortName, double DollarRate, DBCAsset context)
+        public void Update(int id, string Name, string ShortName, double DollarRate, DBCAsset context)
         {
             Country c = context.Countries.FirstOrDefault(x => x.Id == id);
 
             c.Name = Name;
             c.ShortName = ShortName;
             c.DollarRate = DollarRate;
-            
+
             context.Update(c);
             context.SaveChanges();
             MsgColor("Country has been Updated");
@@ -94,7 +94,7 @@ namespace Asset
         public void Delete(int id, DBCAsset context)
         {
             Country c = context.Countries.FirstOrDefault(x => x.Id == id);
-            context.Remove (c);
+            context.Remove(c);
             context.SaveChanges();
             MsgColor("Country has been Deleted");
         }
