@@ -1,4 +1,6 @@
 ﻿// Added
+using Asset;
+using Microsoft.EntityFrameworkCore;
 using static Asset.Utils;
 
 namespace Asset
@@ -11,24 +13,68 @@ namespace Asset
                  validData = true;
             string sInput = "";
             int id = 0;
-            int iProd = 0;
-            int iCountry = 0;
+            int productId = 0;
+            int countryId = 0;
             DateTime dt = Convert.ToDateTime("01-01-2021");
-            
+
             MyAsset asset = new MyAsset();
             MyAsset newAsset = new MyAsset();
-            Product prod = new Product();
+            Product product = new Product();
             Country country = new Country();
 
-            if (update)   
+            if (update)
             {
-                while (!exit)
+                while (!exit) // Enter Id to Update
                 {
                     asset.Show(true, context);
                     Top("Please enter an Asset Id from the list:");
                     sInput = CheckStr("Asset Id: ", sInput);
-                    
-                    if (!Empty(sInput) && Exit(sInput))
+
+                    if (!Empty(sInput))
+                    {
+                        if (Exit(sInput))
+                        {
+                            exit = true;
+                            validData = false;
+                            break;
+                        }
+
+                        try
+                        {
+                            id = Convert.ToInt32(sInput);
+                            // Check Id exists 
+                            if (asset.CheckId(id, context))
+                            {
+                                validData = true;
+                                break;
+                            }
+                            else
+                            {
+                                validData = false;
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            validData = false;
+                            MsgColor(e.Message);
+                        }
+
+                    }
+                }
+            }
+
+            while (!exit) // Product
+            {
+                // Input Assets 
+                product.Show(context); //Show Products List
+
+                Top("Please enter a Product Id from the list:");
+
+                sInput = CheckStr("Product Id: ", sInput);
+                if (!Empty(sInput))
+                {
+                    if (Exit(sInput))
                     {
                         exit = true;
                         validData = false;
@@ -37,9 +83,47 @@ namespace Asset
 
                     try
                     {
-                        id = Convert.ToInt32(sInput);
-                        // Check Id exists 
-                        if (asset.CheckId(id, context))
+                        productId = Convert.ToInt32(sInput);
+                        // Check Product exists  
+                        if (product.CheckId(productId, context))
+                        {
+                            validData = true;
+                            break;
+                        }
+                        else
+                        {
+                            validData = false;
+                        }
+                        break;
+                    }
+                    catch (Exception e)
+                    {
+                        validData = false;
+                        MsgColor(e.Message);
+                    }
+                }
+            }
+
+            while (!exit) // Country
+            {
+                country.Show(context); //Show Countries List
+
+                Top("Please enter a Country Id from the list:");
+                sInput = CheckStr("Country Id: ", sInput);
+
+                if (!Empty(sInput))
+                {
+                    if (Exit(sInput))
+                    {
+                        exit = true;
+                        validData = false;
+                        break;
+                    }
+                    try
+                    {
+                        countryId = Convert.ToInt32(sInput);
+                        // Check Country exists  
+                        if (country.CheckId(countryId, context))
                         {
                             validData = true;
                             break;
@@ -57,93 +141,16 @@ namespace Asset
                 }
             }
 
-            while (!exit)
+            while (!exit) // Purchase Date
             {
-                // Input Assets 
-                prod.Show(context); //Show Products List
-
-                Top("Please enter a Product Id from the list:");
-                
-                if (update) //Show Product
-                {
-                    //sInput = newAsset.ProductId.ToString();
-                    //sInput = asset.ProductId.ToString();
-                    //WriteColor("Product Id: " + sInput, "y");
-                }
-
-                sInput = CheckStr("Product Id: ", sInput);
-
-                if (!Empty(sInput) && Exit(sInput) )
-                {
-                    exit = true;
-                    validData = false;
-                    break;
-                }
-                
-                try
-                {
-                    iProd = Convert.ToInt32(sInput);
-                    validData = true;
-                    // Check ProdId exists  
-                    break;
-                }
-                catch (Exception e)
-                {
-                    validData = false;
-                    MsgColor(e.Message);
-                }
-            }
-
-            while (!exit)
-            {
-                country.Show(context); //Show Countries List
-
-                if (update)
-                {
-                    //sInput = newAsset.CountryId.ToString();
-                    //sInput = asset.CountryId.ToString();
-                    //WriteColor("Country Id: " + sInput, "y");
-                }
-
-                Top("Please enter a Country Id from the list:");
-                sInput = CheckStr("Country Id: ", sInput);
-
-                if (!Empty(sInput) && Exit(sInput))
-                {
-                    exit = true;
-                    validData = false;
-                    break;
-                }
-                try
-                {
-                    iCountry = Convert.ToInt32(sInput);
-                    validData = true;
-                    // Check countryId 
-                    break;
-                }
-                catch (Exception e)
-                {
-                    validData = false;
-                    MsgColor(e.Message);
-                }
-            }
-
-            while (!exit)
-            {
-                if (update)
-                {
-                    //sInput = asset.PurchaseDate.ToString();
-                    //WriteColor("Purchase Date: " + sInput, "y");
-                }
-
                 sInput = CheckStr("Purchase Date (DD/MM/YYYY): ", sInput);
-                if (!Empty(sInput) && Exit(sInput))
+                if (Exit(sInput))
                 {
                     exit = true;
                     validData = false;
                     break;
                 }
-                
+
                 try
                 {
                     dt = Convert.ToDateTime(sInput);
@@ -162,12 +169,12 @@ namespace Asset
                 if (!update)
                 {
                     // Add new record 
-                    newAsset.Add(dt, iProd, iCountry, context);
+                    newAsset.Add(dt, productId, countryId, context);
                 }
                 else
                 {
                     // Update
-                    newAsset.Update(id, dt, iProd, iCountry, context); // Works
+                    newAsset.Update(id, dt, productId, countryId, context); // Works
                 }
             }
         } // InputAsset
@@ -185,27 +192,31 @@ namespace Asset
                 asset.Show(true, context);
                 Top("Please enter an Asset Id from the list:");
                 input = CheckStr("Asset Id: ", input);
-                if (!Empty(input) && Exit(input))
+                if (!Empty(input))
                 {
-                    exit = true;
-                    break;
-                }
-
-                try
-                {
-                    id = Convert.ToInt32(input);
-                    if (asset.CheckId(id, context))
+                    if (Exit(input))
                     {
-                        asset.Delete(id, context); //Works 
+                        exit = true;
                         break;
                     }
-                }
-                catch (Exception e)
-                {
-                    exit = false;
-                    MsgColor(e.Message);
+
+                    try
+                    {
+                        id = Convert.ToInt32(input);
+                        if (asset.CheckId(id, context))
+                        {
+                            asset.Delete(id, context); //Works 
+                            break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        exit = false;
+                        MsgColor(e.Message);
+                    }
                 }
             }
         } // Delete 
+
     }
 }

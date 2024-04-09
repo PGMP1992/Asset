@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Drawing;
+
 
 
 // Added
@@ -18,15 +20,29 @@ namespace Asset
         public double Price { get; set; } = 0.00;
         [MaxLength(100)]
         public string Type { get; set; }
-        public MyAsset MyAsset { get; set; }
+        //public MyAsset MyAsset { get; set; }
         
         // Methods
 
+        // Select a record
         public Product Select(int id, DBCAsset context)
         {
-            return context.Products.FirstOrDefault(x => x.Id == id);
+            Product a = new Product();
+            a = context.Products.FirstOrDefault(x => x.Id == id);
+            if (a == null)
+            {
+                ErrorMsg("Product Id does not exist!");
+            }
+            return a;
         }
 
+        // check Id exits 
+        public bool CheckId(int id, DBCAsset context)
+        {
+            return (Select(id, context) != null);
+        }
+
+        // Show Records
         public void Show(DBCAsset context)
         {
             string title = "";
@@ -36,8 +52,7 @@ namespace Asset
                     "Type".PadRight(10) +
                     "Brand".PadRight(10) +
                     "Model".PadRight(20) +
-                    "Price".PadRight(10) +
-                    "Type";
+                    "Price".PadRight(10) ;
 
             WriteColor("Products :", "y");
             DrawLine(title);
@@ -49,7 +64,8 @@ namespace Asset
                                   p.Type.PadRight(10) +
                                   p.Brand.PadRight(10) +
                                   p.Model.PadRight(20) +
-                                  p.Price.ToString().PadRight(10), "w");
+                                  //p.Price.ToString().PadRight(10), "w");
+                                  String.Format("{0:###,###}", p.Price) ,"w");
             }
             DrawLine(title);
         }

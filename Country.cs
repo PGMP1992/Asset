@@ -16,15 +16,26 @@ namespace Asset
         [MaxLength(5)]
         public string ShortName { get; set; } // Ex. SEK, USD
         public double DollarRate { get; set; } = 0.00;
-        public MyAsset MyAsset { get; set; }
+        //public MyAsset MyAsset { get; set; }
        
         // Methods -------------------------------------------------------
 
-        // Select Record
+        // Select a record
         public Country Select(int id, DBCAsset context)
         {
-            //return context.Countries.FirstOrDefault(x => x.Id == id);
-            return context.Countries.Find(id);
+            Country a = new Country();
+            a = context.Countries.FirstOrDefault(x => x.Id == id);
+            if (a == null)
+            {
+                ErrorMsg("Country Id does not exist!");
+            }
+            return a;
+        }
+
+        // check Id exits 
+        public bool CheckId(int id, DBCAsset context)
+        {
+            return (Select(id, context) != null);
         }
 
         // Show All records

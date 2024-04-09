@@ -9,231 +9,134 @@ using Asset;
 
 // Added 
 using static Asset.Utils;
-using static Asset.CRUDAsset; // Asset Methods
+using static Asset.CRUDAsset;
+using System.Linq;
+using System.ComponentModel.Design; // Asset Methods
 
-internal class Program
+// Vars
+bool exit = false;
+
+// Create DbContext
+DBCAsset context = new DBCAsset();
+
+while (!exit)
 {
-    private static void Main(string[] args)
+    Console.WriteLine();
+    WriteColor("Track Asset App ", "y");
+
+    exit = MainMenu(context);
+}
+
+static bool MainMenu(DBCAsset context)
+{
+    bool exit = false;
+    string input = "";
+    Product product = new Product();
+    Country country = new Country();
+    string[] entry = { "1", "2", "3", "C", "Q"};
+
+    while (!exit)
     {
-        // Vars
-        bool exit = false;
+        Console.WriteLine("");
+        WriteColor("Main Menu", "y");
+        WriteColor("-----------------------------------------------", "y");
+        WriteColor("(1) Assets", "g");
+        WriteColor("(2) Show Products", "g");
+        WriteColor("(3) Show Countries", "g");
+        WriteColor("(C) Clear Screen", "g");
+        WriteColor("(Q) Quit", "g");
 
-        // Create DbContext
-        DBCAsset context = new DBCAsset();
+        Console.WriteLine("");
+        Console.Write("");
 
-        while (!exit)
+        input = CheckStr("Choose an Option: ", input);
+        if (entry.Contains(input))
         {
-            Console.WriteLine();
-            WriteColor("Track Asset App ", "y");
-
-            exit = MainMenu(context);
-        }
-
-        static bool MainMenu(DBCAsset context)
-        {
-            bool exit = false;
-            string input = "";
-
-            while (!exit)
+            switch (input) // MainMenu 
             {
-                WriteColor("Main Menu", "y");
-                WriteColor("-----------------------------------------------", "y");
-                WriteColor("(1) Assets", "g");
-                WriteColor("(2) Products", "g");
-                WriteColor("(3) Countries", "g");
-                WriteColor("(Q) Quit", "g");
-
-                Console.WriteLine("");
-                Console.Write("");
-
-                input = CheckStr("Choose an Option: ", input);
-
-                switch (input) // MainMenu 
-                {
-                    case "1":
-                        MenuAssets(context);
-                        exit = false;
-                        break;
-                    case "2":
-                        MenuProducts(context);
-                        exit = false;
-                        break;
-                    case "3":
-                        MenuCountries(context);
-                        exit = false;
-                        break;
-                    case "Q":
-                        exit = true;
-                        break;
-                }
+                case "1":
+                    MenuAssets(context);
+                    break;
+                case "2":
+                    product.Show(context);
+                    break;
+                case "3":
+                    country.Show(context);
+                    break;
+                case "C":
+                    Console.Clear();
+                    break;
+                case "Q":
+                    exit = true;
+                    break;
             }
-            return exit;
         }
-
-
-
-        static bool MenuAssets(DBCAsset context)
+        else if (!Empty(input))
         {
-            bool exit = false;
-            string input = "";
-            MyAsset asset = new MyAsset();
-
-            while (!exit)
-            {
-                WriteColor("Assets Menu", "y");
-                WriteColor("-----------------------------------------------", "y" );
-                WriteColor("(1) Show Assets ( sort by Office and Date)", "g");
-                WriteColor("(2) Show Assets ( sort by Date)", "g");
-                WriteColor("(3) Add", "g");  
-                WriteColor("(4) Edit", "g");
-                WriteColor("(5) Remove", "g");
-                WriteColor("(Q) Back to Main Menu", "g");
-
-                Console.WriteLine("");
-
-                input = CheckStr("Choose an Option: ", input);
-
-                switch (input)
-                {
-                    case "1":
-                        asset.Show(true, context);
-                        exit = false;
-                        break;
-                    case "2":
-                        asset.Show(false, context);
-                        exit = false;
-                        break;
-                    case "3":
-                        // Add New Asset
-                        InputAsset(false, context);
-                        exit = false;
-                        break;
-                    case "4":
-                        // Edit
-                        InputAsset(true, context);
-                        exit = false;
-                        break;
-                    case "5":
-                        //  Delete
-                        DeleteAsset(context);
-                        exit = false;
-                        break;
-                    case "Q":
-                        exit = true;
-                        break;
-                }
-            }
-            return exit;
-        }
-
-        static bool MenuProducts(DBCAsset context)
-        {
-            bool exit = false;
-            string input = "";
-            Product prod = new Product();
-
-            while (!exit)
-            {
-                WriteColor("Products Menu", "y");
-                WriteColor("-----------------------------------------------", "y");
-                WriteColor("(1) Show Products", "g");
-                /*
-                WriteColor("(2) Add", "g");
-                WriteColor("(3) Edit", "g");
-                WriteColor("(4) Remove", "g"); 
-                */
-                WriteColor("(Q) Back to Main Menu", "g");
-
-                Console.WriteLine("");
-
-                input = CheckStr("Choose an Option: ", input);
-
-                switch (input)
-                {
-                    case "1":
-                        prod.Show(context);
-                        exit = false;
-                        break;
-                  /*  case "2":
-                        //prod.Show(context);
-                        exit = false;
-                        break;
-                    case "3":
-                        // Add New Asset
-                        //InputProd(false, context);
-                        exit = false;
-                        break;
-                    case "4":
-                        // Edit
-                        //InputProd(true, context);
-                        exit = false;
-                        break;
-                    case "5":
-                        //  Delete
-                        //DeleteProd(context);
-                        exit = false;
-                        break;
-                  */
-                    case "Q":
-                        exit = true;
-                        break;
-                }
-            }
-            return exit;
-        }
-
-        static bool MenuCountries(DBCAsset context)
-        {
-            bool exit = false;
-            string input = "";
-            Country country = new Country();
-
-            while (!exit)
-            {
-                WriteColor("Countries Main Menu", "y");
-                WriteColor("-----------------------------------------------", "y");
-                WriteColor("(1) Show countries", "g");
-                /*
-                WriteColor("(2) Add", "g");
-                WriteColor("(3) Edit", "g");
-                WriteColor("(4) Remove", "g");
-                */
-                WriteColor("(Q) Back to Main Menu", "g");
-
-                Console.WriteLine("");
-                Console.Write("");
-
-                input = CheckStr("Choose an Option: ", input);
-
-                switch (input)
-                {
-                    case "1":
-                        country.Show(context);
-                        exit = false;
-                        break;
-                    /*
-                    case "2":
-                        // Add New Asset
-                        //InputCountry(false, context);
-                        exit = false;
-                        break;
-                    case "3":
-                        // Edit
-                        //InputCountry(true, context);
-                        exit = false;
-                        break;
-                    case "4":
-                        //  Delete
-                        //DeleteCountry(context);
-                        exit = false;
-                        break;
-                    */
-                    case "Q":
-                        exit = true;
-                        break;
-                }
-            }
-            return exit;
+            MsgColor("Invalid Entry! Please try again.");
         }
     }
+    return exit;
+}
+
+
+static bool MenuAssets(DBCAsset context)
+{
+    bool exit = false;
+    string input = "";
+    MyAsset asset = new MyAsset();
+    string[] entry = { "1", "2", "3", "4", "5", "C", "Q"};
+
+    while (!exit)
+    {
+        Console.WriteLine("");
+        WriteColor("Assets Menu", "y");
+        WriteColor("-----------------------------------------------", "y");
+        WriteColor("(1) Show Assets ( sort by Office and Date)", "g");
+        WriteColor("(2) Show Assets ( sort by Date)", "g");
+        WriteColor("(3) Add", "g");
+        WriteColor("(4) Edit", "g");
+        WriteColor("(5) Remove", "g");
+        WriteColor("(C) Clear Screen", "g");
+        WriteColor("(Q) Back to Main Menu", "g");
+
+        Console.WriteLine("");
+        input = CheckStr("Choose an Option: ", input);
+
+        if (entry.Contains(input))
+        {
+            switch (input)
+            {
+                case "1":
+                    asset.Show(true, context);
+                    break;
+                case "2":
+                    asset.Show(false, context);
+                    break;
+                case "3":
+                    // Add New Asset
+                    InputAsset(false, context);
+                    break;
+                case "4":
+                    // Edit
+                    InputAsset(true, context);
+                    break;
+                case "5":
+                    //  Delete
+                    DeleteAsset(context);
+                    break;
+                case "C":
+                    Console.Clear();
+                    break;
+                case "Q":
+                    exit = true;
+                    break;
+            }
+        }
+        else if (!Empty(input))
+        {
+            MsgColor("Invalid Entry! Please try again.");
+        }
+    }
+    return exit;
 }
